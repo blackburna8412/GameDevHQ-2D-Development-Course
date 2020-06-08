@@ -17,24 +17,47 @@ public class Player : MonoBehaviour
     private float yMin = -3.8f, yMax = 0f;
 
     //GameObject variables
-
+    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private float _fireRate = .5f;
+    private float _canFire = -1f;
     //Bool Variables
 
     //Int Variables
 
     //String Variables
 
+    //Vector 3 Variables
 
     // Start is called before the first frame update
     void Start()
     {
-
+        if(_laserPrefab == null)
+        {
+            Debug.LogError("_laserPrefab is NULL");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         CalculateMovement();
+
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        {
+            FireLaser();
+        }
+    }
+
+    private void FireLaser()
+    {
+        //These lines of code clone a laser object with on the y axis with an offset of 1 when spacebar is pressed
+        //at a rate of 1 object every .15 seconds
+        //**Always assign laser prefab in the inspector or it will not work!**
+        Vector3 offset = transform.position;
+        offset.y += .8f;
+
+        _canFire = Time.time + _fireRate;
+        Instantiate(_laserPrefab, offset, Quaternion.identity);
     }
 
     private void CalculateMovement()
