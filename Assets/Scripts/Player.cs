@@ -10,6 +10,22 @@ public class Player : MonoBehaviour
     /// Course: GameDevHQ 2D Course Development
     /// Project Name: Space Shooter Pro
     /// </summary>
+
+    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _tripleShotPrefab;
+
+    [SerializeField] private SpawnManager _spawnManager;
+
+    [SerializeField] private float _fireRate = .5f;
+    private float _canFire = -1f;
+    [SerializeField] private float _movementSpeed = 3.5f;
+    private float xMin = -11.31f, xMax = 11.31f;
+    private float yMin = -3.64f, yMax = 0f;
+
+    [SerializeField] private int _healthCount = 3;
+
+    [SerializeField] private bool _isTripleShotActive = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,38 +52,31 @@ public class Player : MonoBehaviour
         }
     }
 
-    //FireLaser() Variables
-    [SerializeField] private GameObject _laserPrefab;
-    [SerializeField] private float _fireRate = .5f;
-    private float _canFire = -1f;
     private void FireLaser()
     {
-        //These lines of code clone a laser object with on the y axis with an offset of 1 when spacebar is pressed
-        //at a rate of 1 object every .15 seconds
-        //**Always assign laser prefab in the inspector or it will not work!**
         Vector3 offset = transform.position;
         offset.y += 1.05f;
 
         _canFire = Time.time + _fireRate;
-        Instantiate(_laserPrefab, offset, Quaternion.identity);
+
+        if(_isTripleShotActive == true)
+        {
+            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(_laserPrefab, offset, Quaternion.identity);
+        }
     }
 
-    //CalculateMovement() Variables
-    [SerializeField] private float _movementSpeed = 3.5f;
-    private float xMin = -11.31f, xMax = 11.31f;
-    private float yMin = -2.4f, yMax = 0f;
     private void CalculateMovement()
     {
-        //the following lines convert player movement input into a float value
-        //which is then used to create a new optimize local Vector3 variable
         float _hInput = Input.GetAxis("Horizontal");
         float _vInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(_hInput, _vInput, 0);
         
-        //                new Vector3((-1 or 1), (-1 or 1), 0) * 3.5f * real time
         transform.Translate(direction * _movementSpeed * Time.deltaTime);
 
-        //these lines constrain the player to within -3.8f and 0 on the y axis
         if (transform.position.y > yMax)
         {
             transform.position = new Vector3(transform.position.x, yMax, transform.position.z);
@@ -77,9 +86,6 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(transform.position.x, yMin, transform.position.z);
         }
 
-        //these lines of code constrain the player within -11.31f and 11.31f on the X Axis 
-        //which will loop the player giving the appearance of exiting one side of the screen 
-        //and enter back from the other side of the screen
         if (transform.position.x > xMax)
         {
             transform.position = new Vector3(xMin, transform.position.y, transform.position.z);
@@ -90,28 +96,31 @@ public class Player : MonoBehaviour
         }
     }
 
-    //Damage() Variables
-    [SerializeField] private int _healthCount = 3;
-    private SpawnManager _spawnManager;
     public void Damage()
     {
-        //This section of code checks if the _healthCounter variable has a value of greater than 0
-        //If this comes back true, the value is reduced by 1
         if(_healthCount > 0)
         {
             _healthCount--;
             Debug.Log("Remaining health: " + _healthCount);
         }
 
-        //This section of code checks if the _healthCounter variable has a value of less than 1
-        //If this comes back true, the player object is destroyed, and game over
         if(_healthCount < 1)
         {
-            //communicate with the spawn manager
-            //Let them know to stop spawning
             _spawnManager.StopSpawning();
             Destroy(this.gameObject);
             Debug.Log("Game Over!");
         }
+    }
+
+    public void TripleShotActive()
+    {
+        _isTripleShotActive = true;
+        StartCoroutine(TripleShotPowerDownRoutine());
+    }
+
+    IEnumerator TripleShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5f);
+        _isTripleShotActive = false;
     }
 }

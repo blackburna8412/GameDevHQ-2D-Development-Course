@@ -10,7 +10,9 @@ public class Enemy : MonoBehaviour
     /// Learned through: GameDevHQ
     /// Project Name: Space Shooter Pro 2D
     /// </summary>
-    
+
+    [SerializeField] private float _movementSpeed = 4f;
+    private float yMin = -7f, yMax = 7f;
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +26,6 @@ public class Enemy : MonoBehaviour
         EnemyBehavior();
     }
 
-    //EnemyBehavior() Variables
-    [SerializeField] private float _movementSpeed = 4f;
-    private float yMin = -7f, yMax = 7f;
     private void EnemyBehavior()
     {
         transform.Translate(Vector3.down * _movementSpeed * Time.deltaTime);
