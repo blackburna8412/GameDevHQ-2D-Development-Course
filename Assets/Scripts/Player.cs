@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     //Bool Variables
 
     //Int Variables
-
+    [SerializeField] private int _healthCount = 3;
     //String Variables
 
     //Vector 3 Variables
@@ -91,6 +91,25 @@ public class Player : MonoBehaviour
         else if (transform.position.x < xMin)
         {
             transform.position = new Vector3(xMax, transform.position.y, transform.position.z);
+        }
+    }
+
+    public void Damage()
+    {
+        //This section of code checks if the _healthCounter variable has a value of greater than 0
+        //If this comes back true, the value is reduced by 1
+        if(_healthCount > 0)
+        {
+            _healthCount--;
+            Debug.Log("Remaining health: " + _healthCount);
+        }
+
+        //This section of code checks if the _healthCounter variable has a value of less than 1
+        //If this comes back true, the player object is destroyed, and game over
+        if(_healthCount < 1)
+        {
+            Destroy(this.gameObject);
+            Debug.Log("Game Over!");
         }
     }
 }
