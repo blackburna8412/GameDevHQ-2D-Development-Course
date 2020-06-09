@@ -8,12 +8,8 @@ public class Laser : MonoBehaviour
     /// Laser Control Script
     /// Written By: Alex Blackburn
     /// Learned through: GameDevHQ
-    /// Project: Space Shooter Pro 2D
+    /// Project Name: Space Shooter Pro 2D
     /// </summary>
-
-    //Float Variables
-    [SerializeField] private float _speed = 8.0f;
-    private float yMax = 8f;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +23,9 @@ public class Laser : MonoBehaviour
         LaserBehaviour();
     }
 
+    //LaserBehavior() Variables
+    [SerializeField] private float _speed = 8.0f;
+    private float yMax = 8f;
     private void LaserBehaviour()
     {
         transform.Translate(Vector3.up * _speed * Time.deltaTime);

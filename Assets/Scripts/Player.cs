@@ -10,30 +10,18 @@ public class Player : MonoBehaviour
     /// Course: GameDevHQ 2D Course Development
     /// Project Name: Space Shooter Pro
     /// </summary>
-
-    //Float Variables
-    [SerializeField] private float _movementSpeed = 3.5f;
-    private float xMin = -11.31f, xMax = 11.31f;
-    private float yMin = -3.8f, yMax = 0f;
-
-    //GameObject variables
-    [SerializeField] private GameObject _laserPrefab;
-    [SerializeField] private float _fireRate = .5f;
-    private float _canFire = -1f;
-    //Bool Variables
-
-    //Int Variables
-    [SerializeField] private int _healthCount = 3;
-    //String Variables
-
-    //Vector 3 Variables
-
     // Start is called before the first frame update
     void Start()
     {
+        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+
         if(_laserPrefab == null)
         {
-            Debug.LogError("_laserPrefab is NULL");
+            Debug.LogError("_laserPrefab on player is NULL");
+        }
+        if(_spawnManager == null)
+        {
+            Debug.LogError("_spawnManager on player is NULL");
         }
     }
 
@@ -48,18 +36,26 @@ public class Player : MonoBehaviour
         }
     }
 
+    //FireLaser() Variables
+    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private float _fireRate = .5f;
+    private float _canFire = -1f;
     private void FireLaser()
     {
         //These lines of code clone a laser object with on the y axis with an offset of 1 when spacebar is pressed
         //at a rate of 1 object every .15 seconds
         //**Always assign laser prefab in the inspector or it will not work!**
         Vector3 offset = transform.position;
-        offset.y += .8f;
+        offset.y += 1.05f;
 
         _canFire = Time.time + _fireRate;
         Instantiate(_laserPrefab, offset, Quaternion.identity);
     }
 
+    //CalculateMovement() Variables
+    [SerializeField] private float _movementSpeed = 3.5f;
+    private float xMin = -11.31f, xMax = 11.31f;
+    private float yMin = -2.4f, yMax = 0f;
     private void CalculateMovement()
     {
         //the following lines convert player movement input into a float value
@@ -94,6 +90,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    //Damage() Variables
+    [SerializeField] private int _healthCount = 3;
+    private SpawnManager _spawnManager;
     public void Damage()
     {
         //This section of code checks if the _healthCounter variable has a value of greater than 0
@@ -108,6 +107,9 @@ public class Player : MonoBehaviour
         //If this comes back true, the player object is destroyed, and game over
         if(_healthCount < 1)
         {
+            //communicate with the spawn manager
+            //Let them know to stop spawning
+            _spawnManager.StopSpawning();
             Destroy(this.gameObject);
             Debug.Log("Game Over!");
         }
