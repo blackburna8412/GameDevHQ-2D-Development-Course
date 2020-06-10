@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _powerUpPrefab;
+    [SerializeField] private GameObject[] _powerUpPrefabs;
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _enemyContainer;
 
@@ -55,9 +55,10 @@ public class SpawnManager : MonoBehaviour
     {
         while(_stopSpawning == false)
         {
+            int randPowerUp = Random.Range(0, 3);
             //every 3 - 7 seconds, spawn in a power up
             Vector3 randPos = new Vector3(Random.Range(-9.37f, 9.37f), 8, 0);
-            Instantiate(_powerUpPrefab, randPos, Quaternion.identity);
+            Instantiate(_powerUpPrefabs[randPowerUp], randPos, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(3, 8));
         }
     }
