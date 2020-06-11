@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
     //Certification Variables
     [SerializeField] private float _thrusterSpeed = 7.5f;
     [SerializeField] private int _shieldStrength = 0;
+    [SerializeField] private int _ammoCount = 15;
     // Start is called before the first frame update
     void Start()
     {
@@ -73,6 +74,7 @@ public class Player : MonoBehaviour
         }
         
         _uiManager.UpdateShieldText(_shieldStrength);
+        _uiManager.UpdateAmmoText(_ammoCount);
     }
 
     private void CheckHealthVisualizer()
@@ -102,17 +104,21 @@ public class Player : MonoBehaviour
 
         _canFire = Time.time + _fireRate;
 
-
-        if(_isTripleShotActive == true)
+        if(_ammoCount >= 1)
         {
-            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
-        }
-        else
-        {
-            Instantiate(_laserPrefab, offset, Quaternion.identity);
+            if(_isTripleShotActive == true)
+            {
+                Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(_laserPrefab, offset, Quaternion.identity);
+            }
+
+            _ammoCount--;
+            _laserAudio.Play();
         }
 
-        _laserAudio.Play();
     }
 
     private void CalculateMovement()
