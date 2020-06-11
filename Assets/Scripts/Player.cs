@@ -33,8 +33,15 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isSpeedBoostActive = false;
     [SerializeField] private bool _isShieldActive = false;
 
+
     private UIManager _uiManager;
     private AudioSource _laserAudio;
+
+    //Certification Variables
+    [SerializeField] private float thrusterSpeed = 7.5f;
+    private bool _canUseThruster = true;
+    private int _shieldStrength = 0;
+    [SerializeField] private int _ammoCount = 15;
 
 
     // Start is called before the first frame update
@@ -69,6 +76,18 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
+
+        if(_shieldStrength > 100)
+        {
+            _shieldStrength = 100;
+            _uiManager.UpdateShieldText(_shieldStrength);
+        }
+
+        if(_ammoCount <= 0)
+        {
+            _ammoCount = 0;
+        }
+        _uiManager.UpdateAmmoText(_ammoCount);
     }
 
     private void CheckHealthVisualizer()
@@ -98,17 +117,22 @@ public class Player : MonoBehaviour
 
         _canFire = Time.time + _fireRate;
 
-
-        if(_isTripleShotActive == true)
+        if(_ammoCount > 0)
         {
-            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
-        }
-        else
-        {
-            Instantiate(_laserPrefab, offset, Quaternion.identity);
+            if(_isTripleShotActive == true)
+            {
+                Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+                _ammoCount -= 3;
+            }
+            else
+            {
+                Instantiate(_laserPrefab, offset, Quaternion.identity);
+                _ammoCount--;
+            }
+
+            _laserAudio.Play();
         }
 
-        _laserAudio.Play();
     }
 
     private void CalculateMovement()
@@ -119,10 +143,20 @@ public class Player : MonoBehaviour
 
         transform.Translate(direction * _movementSpeed * Time.deltaTime);
 
+        //Certification Addition for Thruster Speed Increase
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (_canUseThruster == true)
+            {
+                transform.Translate(direction * (_movementSpeed + thrusterSpeed) * Time.deltaTime);
+            }
+        }
+
         if (transform.position.y > yMax)
         {
             transform.position = new Vector3(transform.position.x, yMax, transform.position.z);
         }
+
         else if (transform.position.y < yMin)
         {
             transform.position = new Vector3(transform.position.x, yMin, transform.position.z);
@@ -140,15 +174,23 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if(_isShieldActive == true)
+        if(_isShieldActive == true && _shieldStrength >= 1)
         {
+            _shieldStrength -= 35;
+            _uiManager.UpdateShieldText(_shieldStrength);
+        }
+        else if(_isShieldActive == true && _shieldStrength <=0)
+        {
+            _shieldStrength = 0;
+            _uiManager.UpdateShieldText(_shieldStrength);
             _isShieldActive = false;
             _shieldObject.SetActive(false);
             return;
         }
+        
 
 
-        if(_healthCount > 0)
+        if(_healthCount > 0 && _isShieldActive != true)
         {
             _healthCount--;
             _uiManager.UpdateLives(_healthCount);
@@ -180,6 +222,7 @@ public class Player : MonoBehaviour
     {
         if(_isSpeedBoostActive != true)
         {
+            _canUseThruster = false;
             _isSpeedBoostActive = true;
             _movementSpeed *= boostedSpeed;
             StartCoroutine(SpeedBoostCoroutine());
@@ -190,13 +233,19 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
         _isSpeedBoostActive = false;
+        _canUseThruster = true;
         _movementSpeed /= boostedSpeed;
     }
 
     public void ShieldPowerUp()
     {
-        _isShieldActive = true;
-        _shieldObject.SetActive(true);
+        if(_shieldStrength < 100)
+        {
+            _shieldStrength = 100;
+            _uiManager.UpdateShieldText(_shieldStrength);
+            _isShieldActive = true;
+            _shieldObject.SetActive(true);
+        }
     }
 
     public void AddScore(int points)

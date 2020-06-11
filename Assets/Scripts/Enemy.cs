@@ -66,7 +66,8 @@ public class Enemy : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            other.transform.GetComponent<Player>().Damage();
+            Player player = other.transform.GetComponent<Player>();
+            player.Damage();
             _enemyAnimation.SetTrigger("OnEnemyDestroyed");
             _collider.enabled = false;
             _explosionAudio.Play();
