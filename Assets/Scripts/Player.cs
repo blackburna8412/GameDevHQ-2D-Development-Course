@@ -174,12 +174,12 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if(_isShieldActive == true && _shieldStrength >= 1)
+        if(_isShieldActive == true && _shieldStrength >= 36)
         {
             _shieldStrength -= 35;
             _uiManager.UpdateShieldText(_shieldStrength);
         }
-        else if(_isShieldActive == true && _shieldStrength <=0)
+        else if(_isShieldActive == true && _shieldStrength <=35)
         {
             _shieldStrength = 0;
             _uiManager.UpdateShieldText(_shieldStrength);
