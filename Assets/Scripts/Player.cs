@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
 
     //Certification Variables
     [SerializeField] private float _thrusterSpeed = 7.5f;
+    [SerializeField] private int _shieldStrength = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -70,6 +71,8 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
+        
+        _uiManager.UpdateShieldText(_shieldStrength);
     }
 
     private void CheckHealthVisualizer()
@@ -153,22 +156,27 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if(_isShieldActive == true)
+        if(_isShieldActive == true && _shieldStrength == 1)
         {
+            _shieldStrength = 0;
             _isShieldActive = false;
             _shieldObject.SetActive(false);
             return;
         }
+        else if(_isShieldActive == true)
+        {
+            _shieldStrength--;
+        }
 
 
-        if(_healthCount > 0)
+        if(_healthCount > 0 && _isShieldActive != true)
         {
             _healthCount--;
             _uiManager.UpdateLives(_healthCount);
             Debug.Log("Remaining health: " + _healthCount);         
         }
 
-        if(_healthCount < 1)
+        if(_healthCount < 1 &&_isShieldActive != true)
         {
             _spawnManager.StopSpawning();
             Destroy(this.gameObject);
@@ -208,8 +216,10 @@ public class Player : MonoBehaviour
 
     public void ShieldPowerUp()
     {
+        _shieldStrength = 3;
         _isShieldActive = true;
         _shieldObject.SetActive(true);
+        _uiManager.UpdateShieldText(_shieldStrength);
     }
 
     public void AddScore(int points)

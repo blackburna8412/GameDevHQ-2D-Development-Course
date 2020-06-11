@@ -13,7 +13,7 @@ public class Laser : MonoBehaviour
 
     [SerializeField] private float _speed = 8.0f;
     private float yMax = 8f;
-    private bool _isEnemyLaser = false;
+    [SerializeField] public bool _isEnemyLaser = false;
 
     // Start is called before the first frame update
     void Start()
@@ -83,6 +83,7 @@ public class Laser : MonoBehaviour
             {
                 player.Damage();
             }
+            Destroy(this.gameObject);
         }
     }
 }

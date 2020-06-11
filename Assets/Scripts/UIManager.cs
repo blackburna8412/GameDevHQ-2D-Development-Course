@@ -13,10 +13,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text _gameOverText;
     [SerializeField] GameObject _gameOverTextObj;
 
+    [SerializeField] private Text _shieldText;
+
     private bool _isGameOver = false;
     // Start is called before the first frame update
     void Start()
     {
+        _shieldText.text = "Shields: " + 0 + "/3";
         _scoreText.text = "Score: " + 0;
         _gameOverText.enabled = false;
     }
@@ -33,6 +36,11 @@ public class UIManager : MonoBehaviour
         {
             SceneManager.LoadScene(1);
         }
+    }
+
+    public void UpdateShieldText(int shieldCount)
+    {
+        _shieldText.text = "Shields: " + shieldCount + "/3";
     }
 
     public void UpdateScoreText(int playerScore)
