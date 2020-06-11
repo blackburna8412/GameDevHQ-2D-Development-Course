@@ -12,21 +12,46 @@ public class Enemy : MonoBehaviour
     /// </summary>
 
     [SerializeField] private float _movementSpeed = 4f;
-    private float yMin = -7f, yMax = 7f;
+    private float yMin = -8f, yMax = 8f;
+    private float _enemyFireRate = 3f;
+    private float _enemyCanFire = -1f;
+
+    private Player _player;
+
+    private Animator _enemyAnimation;
+    private Collider2D _collider;
+    private AudioSource _explosionAudio;
+    [SerializeField] private GameObject _laserPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        _explosionAudio = GetComponent<AudioSource>();
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        _enemyAnimation = GetComponent<Animator>();
+        _collider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        EnemyBehavior();
+        EnemyMovementCalculation();
+
+        if(Time.time > _enemyCanFire)
+        {
+            _enemyFireRate = Random.Range(3f, 7f);
+            _enemyCanFire = Time.time + _enemyFireRate;
+            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+            for(int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].AssignEnemyLaser();
+            }
+        }
     }
 
-    private void EnemyBehavior()
+    private void EnemyMovementCalculation()
     {
         transform.Translate(Vector3.down * _movementSpeed * Time.deltaTime);
 
@@ -42,14 +67,24 @@ public class Enemy : MonoBehaviour
         if(other.tag == "Player")
         {
             other.transform.GetComponent<Player>().Damage();
-            Destroy(this.gameObject);
+            _enemyAnimation.SetTrigger("OnEnemyDestroyed");
+            _collider.enabled = false;
+            _explosionAudio.Play();
+            Destroy(this.gameObject, 2.4f);
             Debug.Log("Enemy Destroyed");
         }
 
         if(other.tag == "Laser")
         {
             Destroy(other.gameObject);
-            Destroy(this.gameObject);
+            if(_player != null)
+            {
+               _player.AddScore(10);
+            }
+            _enemyAnimation.SetTrigger("OnEnemyDestroyed");
+            _collider.enabled = false;
+            _explosionAudio.Play();
+            Destroy(this.gameObject, 2.4f);
             Debug.Log("Enemy Destroyed");
         }
     }
