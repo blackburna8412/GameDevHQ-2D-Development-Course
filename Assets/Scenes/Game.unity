@@ -1472,6 +1472,7 @@ MonoBehaviour:
   _isTripleShotActive: 0
   _isSpeedBoostActive: 0
   _isShieldActive: 0
+  _thrusterSpeed: 8.5
 --- !u!212 &1425383702
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -36,7 +36,8 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
     private AudioSource _laserAudio;
 
-
+    //Certification Variables
+    [SerializeField] private float _thrusterSpeed = 7.5f;
     // Start is called before the first frame update
     void Start()
     {
@@ -117,7 +118,14 @@ public class Player : MonoBehaviour
         float _vInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(_hInput, _vInput, 0);
 
-        transform.Translate(direction * _movementSpeed * Time.deltaTime);
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            ThrusterSpeed(direction);
+        }
+        else
+        {
+            transform.Translate(direction * _movementSpeed * Time.deltaTime);
+        }
 
         if (transform.position.y > yMax)
         {
@@ -136,6 +144,11 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(xMax, transform.position.y, transform.position.z);
         }
+    }
+
+    private void ThrusterSpeed(Vector3 direction)
+    {
+        transform.Translate(direction * _thrusterSpeed * Time.deltaTime);
     }
 
     public void Damage()
