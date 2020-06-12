@@ -75,7 +75,7 @@ public class Enemy : MonoBehaviour
             Debug.Log("Enemy Destroyed");
         }
 
-        if (other.tag == "Laser") ;
+        if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
             if(_player != null)

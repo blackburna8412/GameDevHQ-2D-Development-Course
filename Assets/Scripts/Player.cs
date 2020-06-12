@@ -162,16 +162,18 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if(_isShieldActive == true && _shieldStrength == 1)
+        if(_isShieldActive == true)
         {
-            _shieldStrength = 0;
-            _isShieldActive = false;
-            _shieldObject.SetActive(false);
-            return;
-        }
-        else if(_isShieldActive == true)
-        {
-            _shieldStrength--;
+            if(_shieldStrength == 1)
+            {
+                _shieldStrength = 0;
+                _isShieldActive = false;
+                _shieldObject.SetActive(false);
+            }
+            else
+            {
+                _shieldStrength--;
+            }
         }
 
 
@@ -228,17 +230,15 @@ public class Player : MonoBehaviour
         _uiManager.UpdateShieldText(_shieldStrength);
     }
 
-    public void AmmoPickUp()
-    {
-        if(_ammoCount < 15)
-        {
-            _ammoCount = 15;
-        }
-    }
-
     public void AddScore(int points)
     {
         _score += points;
         _uiManager.UpdateScoreText(_score);
+    }
+
+    public void AmmoPickUp()
+    {
+        _ammoCount = 15;
+        _uiManager.UpdateAmmoText(_ammoCount);
     }
 }

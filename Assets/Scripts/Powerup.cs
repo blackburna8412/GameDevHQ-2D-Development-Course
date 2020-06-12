@@ -54,7 +54,7 @@ public class Powerup : MonoBehaviour
                         player.ShieldPowerUp();
                         break;
                     case 3:
-                        Debug.Log("Ammo Aquired");
+                        Debug.Log("Ammo Replenished!");
                         player.AmmoPickUp();
                         break;
                     default:
