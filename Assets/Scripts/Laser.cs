@@ -15,10 +15,12 @@ public class Laser : MonoBehaviour
     private float yMax = 8f;
     [SerializeField] public bool _isEnemyLaser = false;
 
+    private Animator _anim;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        _anim = GameObject.Find("Main Camera").GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -84,6 +86,7 @@ public class Laser : MonoBehaviour
                     Player player = other.GetComponent<Player>();
                     if (player != null)
                     {
+                        _anim.SetTrigger("playerDamaged");
                         player.Damage();
                     }
                     Destroy(this.gameObject);

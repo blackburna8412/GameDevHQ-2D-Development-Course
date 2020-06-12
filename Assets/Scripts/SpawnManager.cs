@@ -61,7 +61,7 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         while(_stopSpawning == false)
         {
-            int randPowerUp = Random.Range(0, 15);
+            int randPowerUp = Random.Range(0, 10);
             //every 3 - 7 seconds, spawn in a power up
             yield return new WaitForSeconds(Random.Range(3, 8));
             Vector3 randPos = new Vector3(Random.Range(-9.37f, 9.37f), 8, 0);

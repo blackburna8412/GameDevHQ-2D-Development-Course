@@ -42,9 +42,11 @@ public class Player : MonoBehaviour
     [SerializeField] private int _ammoCount = 15;
     [SerializeField] private bool _isSpreadShotActive = false;
     [SerializeField] private GameObject _spreadShotPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
+
         _laserAudio = GetComponent<AudioSource>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
@@ -168,6 +170,8 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
+
+
         if(_isShieldActive == true)
         {
             if(_shieldStrength == 1)

@@ -23,10 +23,12 @@ public class Enemy : MonoBehaviour
     private Collider2D _collider;
     private AudioSource _explosionAudio;
     [SerializeField] private GameObject _laserPrefab;
+    private Animator _anim;
 
     // Start is called before the first frame update
     void Start()
     {
+        _anim = GameObject.Find("Main Camera").GetComponent<Animator>();
         _explosionAudio = GetComponent<AudioSource>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         _enemyAnimation = GetComponent<Animator>();
@@ -71,6 +73,7 @@ public class Enemy : MonoBehaviour
             _enemyAnimation.SetTrigger("OnEnemyDestroyed");
             _collider.enabled = false;
             _explosionAudio.Play();
+            _anim.SetTrigger("playerDamaged");
             Destroy(this.gameObject, 2.4f);
             Debug.Log("Enemy Destroyed");
         }
