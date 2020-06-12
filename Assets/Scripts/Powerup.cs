@@ -61,6 +61,10 @@ public class Powerup : MonoBehaviour
                         Debug.Log("Player gains 1 health");
                         player.HealthPickUp();
                         break;
+                    case 5:
+                        Debug.Log("Spread Shot Active");
+                        player.SpreadShotPickUp();
+                        break;
                     default:
                         Debug.Log("Default Value");
                         break;

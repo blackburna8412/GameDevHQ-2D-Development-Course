@@ -29,6 +29,10 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(1);
+        }
         if(Input.GetKeyDown(KeyCode.R) && _isGameOver != false)
         {
                 SceneManager.LoadScene(0);

@@ -40,6 +40,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float _thrusterSpeed = 7.5f;
     [SerializeField] private int _shieldStrength = 0;
     [SerializeField] private int _ammoCount = 15;
+    [SerializeField] private bool _isSpreadShotActive = false;
+    [SerializeField] private GameObject _spreadShotPrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -109,6 +111,10 @@ public class Player : MonoBehaviour
             if(_isTripleShotActive == true)
             {
                 Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+            }
+            else if(_isSpreadShotActive == true)
+            {
+                Instantiate(_spreadShotPrefab, transform.position, Quaternion.identity);
             }
             else
             {
@@ -244,7 +250,22 @@ public class Player : MonoBehaviour
 
     public void HealthPickUp()
     {
-        _healthCount++;
-        _uiManager.UpdateLives(_healthCount);
+        if(_healthCount < 3)
+        {
+            _healthCount++;
+            _uiManager.UpdateLives(_healthCount);
+        }
+    }
+
+    public void SpreadShotPickUp()
+    {
+        _isSpreadShotActive = true;
+        StartCoroutine(SpreadShotRoutine());
+    }
+
+    IEnumerator SpreadShotRoutine()
+    {
+        yield return new WaitForSeconds(5);
+        _isSpreadShotActive = false;
     }
 }
