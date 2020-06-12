@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     private float _enemyCanFire = -1f;
 
     private Player _player;
+    private Laser __laser;
 
     private Animator _enemyAnimation;
     private Collider2D _collider;
@@ -74,7 +75,7 @@ public class Enemy : MonoBehaviour
             Debug.Log("Enemy Destroyed");
         }
 
-        if(other.tag == "Laser")
+        if (other.tag == "Laser") ;
         {
             Destroy(other.gameObject);
             if(_player != null)
@@ -86,6 +87,8 @@ public class Enemy : MonoBehaviour
             _explosionAudio.Play();
             Destroy(this.gameObject, 2.4f);
             Debug.Log("Enemy Destroyed");
+         
         }
     }
 }
+

@@ -29,7 +29,7 @@ public class Laser : MonoBehaviour
 
     private void LaserBehaviour()
     {
-        if(_isEnemyLaser == false)
+        if (_isEnemyLaser == false)
         {
             MoveUp();
         }
@@ -76,14 +76,19 @@ public class Laser : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Player" && _isEnemyLaser == true)
+        if (other.tag == "Player")
         {
-            Player player = other.GetComponent<Player>();
-            if(player != null)
             {
-                player.Damage();
+                if (_isEnemyLaser == true)
+                {
+                    Player player = other.GetComponent<Player>();
+                    if (player != null)
+                    {
+                        player.Damage();
+                    }
+                    Destroy(this.gameObject);
+                }
             }
-            Destroy(this.gameObject);
         }
     }
 }

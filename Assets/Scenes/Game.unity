@@ -849,6 +849,7 @@ MonoBehaviour:
   - {fileID: 5732608010775143879, guid: b431aad08dce7744189ec0cf939cda7b, type: 3}
   - {fileID: 6297352960747088911, guid: e4f2c17e683671b4f9b65688b51fe104, type: 3}
   - {fileID: 3711302542819803825, guid: ebf235739de1af8479fa134635ff1d93, type: 3}
+  - {fileID: 8689694715398824755, guid: bdb2e6aaa5b131d48b310b939962deca, type: 3}
   _enemyPrefab: {fileID: 2528588687469271936, guid: a8b2b978330d831489e54e0035638bed,
     type: 3}
   _enemyContainer: {fileID: 484347878}

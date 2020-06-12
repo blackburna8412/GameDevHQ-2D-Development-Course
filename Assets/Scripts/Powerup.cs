@@ -53,6 +53,10 @@ public class Powerup : MonoBehaviour
                         Debug.Log("Collected Shields");
                         player.ShieldPowerUp();
                         break;
+                    case 3:
+                        Debug.Log("Ammo Aquired");
+                        player.AmmoPickUp();
+                        break;
                     default:
                         Debug.Log("Default Value");
                         break;

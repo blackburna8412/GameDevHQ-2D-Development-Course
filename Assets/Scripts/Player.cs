@@ -228,6 +228,14 @@ public class Player : MonoBehaviour
         _uiManager.UpdateShieldText(_shieldStrength);
     }
 
+    public void AmmoPickUp()
+    {
+        if(_ammoCount < 15)
+        {
+            _ammoCount = 15;
+        }
+    }
+
     public void AddScore(int points)
     {
         _score += points;
