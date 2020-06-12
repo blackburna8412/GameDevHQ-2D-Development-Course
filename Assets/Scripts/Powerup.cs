@@ -57,6 +57,10 @@ public class Powerup : MonoBehaviour
                         Debug.Log("Ammo Replenished!");
                         player.AmmoPickUp();
                         break;
+                    case 4:
+                        Debug.Log("Player gains 1 health");
+                        player.HealthPickUp();
+                        break;
                     default:
                         Debug.Log("Default Value");
                         break;
