@@ -19,7 +19,7 @@ public class SpawnManager : MonoBehaviour
     public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());
-        StartCoroutine(SpawnPowerUpRoutine());
+        StartCoroutine(PowerUpSpawnRoutine());
     }
 
     private void DebugErrorMessages()
@@ -48,7 +48,7 @@ public class SpawnManager : MonoBehaviour
     public IEnumerator SpawnEnemyRoutine()
     {
         yield return new WaitForSeconds(3f);
-        while(_stopSpawning == false)
+        while (_stopSpawning == false)
         {
             Vector3 randPos = new Vector3(Random.Range(-9.37f, 9.37f), 8, 0);
             Instantiate(_enemyPrefab, randPos, Quaternion.identity, _enemyContainer.transform);
@@ -56,12 +56,19 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnPowerUpRoutine()
+    //Power Up Spawn Rates: 
+    //Ammo 21% 
+    //Health 11% 
+    //Triple Shot 21% 
+    //Spread Shot 5% 
+    //Shield 21% 
+    //Speed 21%
+    IEnumerator PowerUpSpawnRoutine()
     {
         yield return new WaitForSeconds(3f);
         while(_stopSpawning == false)
         {
-            int randPowerUp = Random.Range(0, 24);
+            int randPowerUp = Random.Range(0, 19);
             //every 3 - 7 seconds, spawn in a power up
             yield return new WaitForSeconds(Random.Range(3, 8));
             Vector3 randPos = new Vector3(Random.Range(-9.37f, 9.37f), 8, 0);
