@@ -16,6 +16,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text _shieldText;
     [SerializeField] private Text _ammoText;
 
+    [SerializeField] private Text _clockText;
+
+    private float _secondsCount = 0;
+    private float _minutesCount = 0;
+
+
+
     private bool _isGameOver = false;
     // Start is called before the first frame update
     void Start()
@@ -42,6 +49,15 @@ public class UIManager : MonoBehaviour
         {
             SceneManager.LoadScene(1);
         }
+
+        Debug.Log(Time.deltaTime);
+
+        UpdateTime();
+    }
+
+    private void UpdateTime()
+    {
+        _clockText.text = _minutesCount + ":" + _secondsCount;
     }
 
     public void UpdateAmmoText(int ammoCount)

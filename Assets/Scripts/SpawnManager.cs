@@ -57,11 +57,11 @@ public class SpawnManager : MonoBehaviour
     }
 
     //Power Up Spawn Rates: 
-    //Ammo 21% 
+    //Ammo 26% 
     //Health 11% 
     //Triple Shot 21% 
     //Spread Shot 5% 
-    //Shield 21% 
+    //Shield 16% 
     //Speed 21%
     IEnumerator PowerUpSpawnRoutine()
     {

@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     private float yMin = -8f, yMax = 8f;
     private float _enemyFireRate = 3f;
     private float _enemyCanFire = -1f;
+    [SerializeField] private int _movementSequence = 1;
 
     private Player _player;
     private Laser __laser;
@@ -55,14 +56,56 @@ public class Enemy : MonoBehaviour
     }
 
     private void EnemyMovementCalculation()
-    {
-        transform.Translate(Vector3.down * _movementSpeed * Time.deltaTime);
-
-        if (transform.position.y < yMin)
+    {       
+        if(_movementSequence == 1)
         {
-            float randomXRange = Random.Range(-9.37f, 9.37f);
-            transform.position = new Vector3(randomXRange, yMax, transform.position.z);
+            transform.Translate(Vector3.down * _movementSpeed * Time.deltaTime);
+            
+            if(transform.position.y <= 5.21f && _movementSequence == 1)
+            {
+                _movementSequence = 2;
+            }
         }
+        
+        if(_movementSequence == 2)
+        {
+            transform.Translate(Vector3.left * _movementSpeed * Time.deltaTime);
+            if(transform.position.x <= -9.05f && _movementSequence == 2)
+            {
+                _movementSequence = 3;
+            }
+        }
+        if(_movementSequence == 3)
+        {
+            transform.Translate(Vector3.down * _movementSpeed * Time.deltaTime);
+            if (transform.position.x <= -9.05f && transform.position.y <= 1f && _movementSequence == 3)
+            {
+                _movementSequence = 4;
+            }
+        }
+        if(_movementSequence == 4)
+        {
+            transform.Translate(Vector3.right * _movementSpeed * Time.deltaTime);
+            if(transform.position.x >= 9.05f && _movementSequence == 4)
+            {
+                _movementSequence = 5;
+            }
+        }
+        if(_movementSequence == 5)
+        {
+            transform.Translate(Vector3.up * _movementSpeed * Time.deltaTime);
+            if(transform.position.y >= 5.21f && _movementSequence == 5)
+            {
+                _movementSequence = 2;
+            }
+        }
+
+
+            if (transform.position.y < yMin)
+            {
+                float randomXRange = Random.Range(-9.37f, 9.37f);
+                transform.position = new Vector3(randomXRange, yMax, transform.position.z);
+            }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
